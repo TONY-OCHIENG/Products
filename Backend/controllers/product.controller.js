@@ -22,7 +22,7 @@ export const addProducts = (req, res) => {
 
 export const getAllProducts = (req, res) => {
     try {
-        const allProducts = "SELECT * FROM products"
+        const allProducts = "SELECT * FROM product"
         databaseConnection.query(allProducts,(error, result) => {
             if (error) return res.status(500).json({success: false, message: error})
             if (result.length > 0) {
