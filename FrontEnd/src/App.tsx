@@ -1,9 +1,13 @@
 import { Plus, Search, X } from 'lucide-react'
 import React, { useState } from 'react'
+import { useForm } from './store/store'
 
 
 function App() {
   const [open,setOpen] = useState<Boolean>(false)
+  const {name, quantity,price,image, setImage,
+    setPrice, setQuantity, setName
+   } = useForm()
  
   const handleOpen = (): void => {
     setOpen(!open)
@@ -24,13 +28,13 @@ function App() {
       <div className='flex justify-end'><X onClick={handleOpen} className='right-0 h-5 w-5 text-gray-600'/></div>
        <form action="" className='w-full'>
         <label htmlFor="" className='text-sm text-gray-400'>Name</label>
-        <input type="text"  className='w-full border p-2 rounded-md outline-none'/>
-         <label htmlFor="" className='text-sm text-gray-400'>Price</label>
-        <input type="number" className='w-full border p-2 rounded-md outline-none'/>
-         <label htmlFor="" className='text-sm text-gray-400'>Quantity</label>
-        <input type="number" className='w-full border p-2 rounded-md outline-none'/>
+        <input type="text"   value={name} onChange={(event) => setName(event.target.value)}  className='w-full border p-2 rounded-md outline-none'/>
+         <label htmlFor=""  className='text-sm text-gray-400'>Price</label>
+        <input type="number"  value={price} onChange={(event) => setPrice(event.target.value)}  className='w-full border p-2 rounded-md outline-none'/>
+         <label htmlFor=""  className='text-sm text-gray-400'>Quantity</label>
+        <input type="number"  value={quantity} onChange={(event) => setQuantity(event.target.value)}  className='w-full border p-2 rounded-md outline-none'/>
          <label htmlFor="" className='text-sm text-gray-400'>Image</label>
-        <input type="file" className='w-full border p-2 rounded-md outline-none'/>
+        <input type="file"  value={image} onChange={(event) => setImage(event.target.value)}  className='w-full border p-2 rounded-md outline-none'/>
         <button className='py-2 w-full bg-gray-800 mt-4 rounded-md text-white font-extrabold cursor-pointer'>Add product</button>
        </form>
       </div>    

@@ -1,26 +1,36 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
-interface FormData{
-    name: string,
-    quantity: number,
-    price:number,
-    image:string,
-    setName: (name: string) => void,
-    setQuantity: (quantity: number) => void,
-    setPrice: (price: number) => void,
-    setImage: (image: string) => void,
+interface FormState {
+    name: string;
+    quantity: string;
+    price: string;
+    image: string;
 }
 
-export const useForm = create(
-    devtools<FormData>((set) => ({
-        name:"",
-        quantity:0,
-        price:0,
-        image:"",
-        setName: (name) => set(() => ({name})),
-        setQuantity: (quantity) => set(() => ({quantity})),
-        setPrice: (price) => set(() => ({price})),
-        setImage: (image) => set(() => ({image}))
-    }))
-)
+interface FormActions {
+    setName: (name: string) => void;
+    setQuantity: (quantity: string) => void;
+    setPrice: (price: string) => void;
+    setImage: (image: string) => void;
+    resetForm: () => void;
+}
+
+type FormData = FormState & FormActions;
+
+export const useForm = create<FormData>()(
+    devtools(
+        (set) => ({
+            name: "",
+            quantity: "",
+            price: "",
+            image: "",
+            setName: (name) => set({ name }),
+            setQuantity: (quantity) => set({ quantity }),
+            setPrice: (price) => set({ price }),
+            setImage: (image) => set({ image }),
+            resetForm: () => set({ name: "", quantity: "", price: "", image: "" }),
+        }),
+        { name: "form-store" }
+    )
+);
