@@ -52,3 +52,13 @@ export const updateProduct = (req, res) => {
         return res.status(500).json({success: false, message: "Internal server error"})
     }
 }
+
+export const deleteProduct = (req, res) =>{
+    const { id } = req.params
+    try {
+        
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({success: false, message: "Internal server error"})
+    }
+}
