@@ -39,11 +39,14 @@ export const getAllProducts = (req, res) => {
 
 export const updateProduct = (req, res) => {
     const { name, price, quantity} = req.body
-    const { filename } = req.file
     const { id } = req.params
 
     try {
-        
+        const updateProduct = "UPDATE product SET name = ?, price = ? quantity = ? WHERE id = ?"
+        databaseConnection.query(updateProduct,[name,price,quantity,id], (error,result) => {
+            if (error) return res.status(500).json({success: false, message: error})
+            return res.status(200).json({success: true, message: "Product updated successfully"})
+        })
     } catch (error) {
         console.log(error)
         return res.status(500).json({success: false, message: "Internal server error"})
