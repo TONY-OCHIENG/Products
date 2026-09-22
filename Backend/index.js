@@ -7,6 +7,7 @@ dotenv.config()
 const app = express()
 app.use(express.json())
 app.use(cors())
+app.use(express.static('Backend/public'))
 app.use("/api/products",productRoutes)
 
 app.listen(process.env.PORT, () => {
