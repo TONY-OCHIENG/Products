@@ -15,8 +15,18 @@ function App() {
           <button className='flex gap-1 py-2 px-8 rounded-md cursor-pointer bg-gray-600 text-white font-extrabold'><Plus/> Add</button>
         </div>
       </div>  
-      <div className='absolute p-4 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  bg-white rounded-md'>
-  
+      <div className='z-10 absolute p-4 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  bg-white rounded-md max-w-md shadow-md'>
+       <form action="" className='w-full'>
+        <label htmlFor="" className='text-sm text-gray-400'>Name</label>
+        <input type="text" className='w-full border p-2 rounded-md outline-none'/>
+         <label htmlFor="" className='text-sm text-gray-400'>Price</label>
+        <input type="number" className='w-full border p-2 rounded-md outline-none'/>
+         <label htmlFor="" className='text-sm text-gray-400'>Quantity</label>
+        <input type="number" className='w-full border p-2 rounded-md outline-none'/>
+         <label htmlFor="" className='text-sm text-gray-400'>Image</label>
+        <input type="file" className='w-full border p-2 rounded-md outline-none'/>
+        <button className='py-3 w-full bg-gray-800 mt-4 rounded-md text-white font-extrabold cursor-pointer'>Add product</button>
+       </form>
       </div>    
     </div>
   )
