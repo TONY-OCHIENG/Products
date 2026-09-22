@@ -56,7 +56,11 @@ export const updateProduct = (req, res) => {
 export const deleteProduct = (req, res) =>{
     const { id } = req.params
     try {
-        
+        const deleteProduct = "DELETE FROM product WHERE id = ?"
+        databaseConnection.query(deleteProduct,[id], (error, result) => {
+            if (error) return res.status(200).json({success: false, message: error})
+            return res.status(200).json({success: true, message: "Product deleted successfully"})
+        })
     } catch (error) {
         console.log(error)
         return res.status(500).json({success: false, message: "Internal server error"})
