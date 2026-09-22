@@ -1,21 +1,10 @@
 import { Plus, Search, X } from 'lucide-react'
 import React, { useState } from 'react'
 
-type input = {
-  name: string,
-  price: number,
-  quantity: number,
-  image:string
-}
 
 function App() {
   const [open,setOpen] = useState<Boolean>(false)
-  const [input, setInput] = useState<input>({
-    name:"",
-    price:0,
-    quantity:0,
-    image:""
-  })
+ 
   const handleOpen = (): void => {
     setOpen(!open)
   }
@@ -35,14 +24,14 @@ function App() {
       <div className='flex justify-end'><X onClick={handleOpen} className='right-0 h-5 w-5 text-gray-600'/></div>
        <form action="" className='w-full'>
         <label htmlFor="" className='text-sm text-gray-400'>Name</label>
-        <input type="text" className='w-full border p-2 rounded-md outline-none'/>
+        <input type="text"  className='w-full border p-2 rounded-md outline-none'/>
          <label htmlFor="" className='text-sm text-gray-400'>Price</label>
         <input type="number" className='w-full border p-2 rounded-md outline-none'/>
          <label htmlFor="" className='text-sm text-gray-400'>Quantity</label>
         <input type="number" className='w-full border p-2 rounded-md outline-none'/>
          <label htmlFor="" className='text-sm text-gray-400'>Image</label>
         <input type="file" className='w-full border p-2 rounded-md outline-none'/>
-        <button className='py-3 w-full bg-gray-800 mt-4 rounded-md text-white font-extrabold cursor-pointer'>Add product</button>
+        <button className='py-2 w-full bg-gray-800 mt-4 rounded-md text-white font-extrabold cursor-pointer'>Add product</button>
        </form>
       </div>    
     </div>
