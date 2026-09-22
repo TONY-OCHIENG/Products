@@ -19,3 +19,20 @@ export const addProducts = (req, res) => {
         return res.status(500).json({success: false, message: "Internal server error"})
     }
 }
+
+export const getAllProducts = (req, res) => {
+    try {
+        const allProducts = "SELECT * FROM products"
+        databaseConnection.query(allProducts,(error, result) => {
+            if (error) return res.status(500).json({success: false, message: error})
+            if (result.length > 0) {
+                return res.status(200).json({success: true, result: result})
+            } else {
+                return res.status(200).json({success: false, message: "No products available"})
+            }
+        })
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({success: false, message: "Internal server error"})
+    }
+}
