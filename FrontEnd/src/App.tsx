@@ -1,8 +1,24 @@
-import { Plus, Search } from 'lucide-react'
+import { Plus, Search, X } from 'lucide-react'
 import React, { useState } from 'react'
 
+type input = {
+  name: string,
+  price: number,
+  quantity: number,
+  image:string
+}
+
 function App() {
-  const [open,setOpen] = useState(false)
+  const [open,setOpen] = useState<Boolean>(false)
+  const [input, setInput] = useState<input>({
+    name:"",
+    price:0,
+    quantity:0,
+    image:""
+  })
+  const handleOpen = (): void => {
+    setOpen(!open)
+  }
   return (
     <div className='relative bg-gray-50 h-screen'>
       <div className='w-full fixed bg-white shadow-md p-4 h-[10vh] items-center'>
@@ -12,10 +28,11 @@ function App() {
             <Search/>
             <input type="text" placeholder='Search product...' className='outline-none w-[80%]'/>
           </div>
-          <button className='flex gap-1 py-2 px-8 rounded-md cursor-pointer bg-gray-600 text-white font-extrabold'><Plus/> Add</button>
+          <button onClick={handleOpen} className='flex gap-1 py-2 px-8 rounded-md cursor-pointer bg-gray-600 text-white font-extrabold'><Plus/> Add</button>
         </div>
       </div>  
-      <div className='z-10 absolute p-4 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  bg-white rounded-md max-w-md shadow-md'>
+      <div className={`z-10 ${open ?'absolute' : 'hidden'} p-4 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  bg-white rounded-md max-w-md shadow-md`}>
+      <div className='flex justify-end'><X onClick={handleOpen} className='right-0 h-5 w-5 text-gray-600'/></div>
        <form action="" className='w-full'>
         <label htmlFor="" className='text-sm text-gray-400'>Name</label>
         <input type="text" className='w-full border p-2 rounded-md outline-none'/>
