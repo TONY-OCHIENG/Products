@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { devtools } from "zustand/middleware";
 
 interface FormInput{
     name: string,
@@ -16,4 +17,16 @@ interface FormActions{
 
 type FormData = FormInput & FormActions
 
-export const useForm = create()
+export const useForm = create<FormData>()(
+    devtools(
+      (set) => ({
+        name: "",
+        price: "",
+        quantity: "",
+        image: null,
+        setName: (name) => set({name}),
+        setPrice: (price) => set({price}),
+        setQuantity:(quantity) => set({quantity}),
+        setImage: (image) => set({image})
+    }), {name: "use-form"})
+)
