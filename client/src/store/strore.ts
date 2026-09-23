@@ -1,3 +1,4 @@
+import axios from "axios";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
@@ -30,3 +31,15 @@ export const useForm = create<FormData>()(
         setImage: (image) => set({image})
     }), {name: "use-form"})
 )
+
+interface ProductItem {
+    name: string,
+    price: string,
+    quantity: string,
+    image: File
+}
+
+interface ProductState{
+    product: ProductItem[],
+    createProduct: (formData: FormData) => Promise<void>
+}
