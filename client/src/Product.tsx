@@ -1,10 +1,12 @@
 import { Search, X } from 'lucide-react'
-import React, { useState, type ChangeEvent } from 'react'
-import { useForm } from './store/strore'
+import React, { useEffect, useState, type ChangeEvent } from 'react'
+import { useForm, useProducts } from './store/strore'
+import toast from 'react-hot-toast'
 
 function Product() {
     const [open, setOpen] = useState<Boolean>(false)
     const [image, setImage] = useState<File | null>(null)
+    const {response, createProduct} = useProducts()
     const { name, price,quantity,
         setName, setPrice, setQuantity
     } = useForm()
@@ -15,7 +17,7 @@ function Product() {
         setImage(file)
     }
 
-    const handleSubmit = (event: ChangeEvent) : void => {
+    const handleSubmit = async (event: ChangeEvent) : Promise<void> => {
         event.preventDefault()
         setOpen(false)
 
@@ -27,7 +29,25 @@ function Product() {
         formData.append('quantity',quantity)
         formData.append('image',image)
 
+        await createProduct(formData)
+
+        
+        if( response.length > 0) {
+            if (response[0].success) {
+                toast.success(response[0].message)
+            } else  {
+                toast.error(response[0].message)
+            }        
+        }
+
+        setName("")
+        setPrice("")
+        setQuantity("")
+
     }
+
+    // console.log("products",products)
+
 
   return (
     <div className='relative h-screen bg-gray-50'>
@@ -45,9 +65,9 @@ function Product() {
         <div className='w-full flex justify-end'>
             <X onClick={() => setOpen(!open)} className='text-gray-600 h-5 w-5 cursor-pointer'/>
         </div>
-        <form action="" className='w-full'>
+        <form action="" className='w-full' onSubmit={handleSubmit}>
             <label htmlFor="" className='text-gray-600 font-extrabold'>Name</label>
-            <input required type="text" name='name' value={name} onChange={(event) => setName(event.target.value)}  className='p-2 rounded-md border w-full text-sm mb-2' placeholder='Product name...'/>      
+            <input  type="text" name='name' value={name} onChange={(event) => setName(event.target.value)}  className='p-2 rounded-md border w-full text-sm mb-2' placeholder='Product name...'/>      
             <label htmlFor="" className='text-gray-600 font-extrabold'>Price</label>
             <input required type="number" name='price' value={price} onChange={(event) => setPrice(event.target.value)}  className='p-2 rounded-md border w-full text-sm mb-2' placeholder='0'/>     
             <label htmlFor="" className='text-gray-600 font-extrabold'>Quantity</label>
@@ -57,7 +77,7 @@ function Product() {
             type="file"
             name="image"
             accept="image/*"  onChange={handleFileChange}  className='p-2 rounded-md border w-full text-sm mb-2'/>
-            <button className='py-2 w-full bg-black text-white font-extrabold rounded-md mt-2 cursor-pointer'>Add product</button>
+            <button type='submit' className='py-2 w-full bg-black text-white font-extrabold rounded-md mt-2 cursor-pointer'>Add product</button>
         </form>
         </div>     
     </div>

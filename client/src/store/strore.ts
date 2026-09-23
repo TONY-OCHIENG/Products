@@ -16,9 +16,9 @@ interface FormActions{
     setImage: (image: File | null) => void
 }
 
-type FormData = FormInput & FormActions
+type FormDatas = FormInput & FormActions
 
-export const useForm = create<FormData>()(
+export const useForm = create<FormDatas>()(
     devtools(
       (set) => ({
         name: "",
@@ -40,6 +40,29 @@ interface ProductItem {
 }
 
 interface ProductState{
-    product: ProductItem[],
+    products: ProductItem[],
     createProduct: (formData: FormData) => Promise<void>
 }
+
+interface AddResponse{
+    message: string,
+    success: boolean,
+}
+
+interface Response{
+    response: AddResponse[]
+}
+
+export const useProducts = create<ProductState & Response>()(
+    devtools(
+        (set) => ({
+            products: [],
+            response: [],
+            createProduct: async (formData: FormData) => {
+                const res = await axios.post<ProductItem & AddResponse>("http://localhost:3000/api/products/addProducts", formData)
+                set((state) => ({ products: [...state.products, res.data], response: [res.data] }))
+            },
+        }),
+        { name: "products-store" }
+    )
+)
