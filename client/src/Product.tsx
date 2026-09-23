@@ -1,5 +1,5 @@
 import { Search, X } from 'lucide-react'
-import React, { useState } from 'react'
+import React, { useState, type ChangeEvent } from 'react'
 import { useForm } from './store/strore'
 
 function Product() {
@@ -13,7 +13,21 @@ function Product() {
         const file = event.target.files?.[0]
         if (!file) return    
         setImage(file)
-      }
+    }
+
+    const handleSubmit = (event: ChangeEvent) : void => {
+        event.preventDefault()
+        setOpen(false)
+
+        if (!image) return // checking if image file exists
+
+        const formData = new FormData()
+        formData.append('name',name)
+        formData.append('price',price)
+        formData.append('quantity',quantity)
+        formData.append('image',image)
+
+    }
 
   return (
     <div className='relative h-screen bg-gray-50'>
@@ -33,13 +47,13 @@ function Product() {
         </div>
         <form action="" className='w-full'>
             <label htmlFor="" className='text-gray-600 font-extrabold'>Name</label>
-            <input type="text" value={name} onChange={(event) => setName(event.target.value)}  className='p-2 rounded-md border w-full text-sm mb-2' placeholder='Product name...'/>      
+            <input required type="text" name='name' value={name} onChange={(event) => setName(event.target.value)}  className='p-2 rounded-md border w-full text-sm mb-2' placeholder='Product name...'/>      
             <label htmlFor="" className='text-gray-600 font-extrabold'>Price</label>
-            <input type="number" value={price} onChange={(event) => setPrice(event.target.value)}  className='p-2 rounded-md border w-full text-sm mb-2' placeholder='0'/>     
+            <input required type="number" name='price' value={price} onChange={(event) => setPrice(event.target.value)}  className='p-2 rounded-md border w-full text-sm mb-2' placeholder='0'/>     
             <label htmlFor="" className='text-gray-600 font-extrabold'>Quantity</label>
-            <input type="number" value={quantity} onChange={(event) => setQuantity(event.target.value)}  className='p-2 rounded-md border w-full text-sm mb-2' placeholder='0'/>     
+            <input required type="number" name='quantity' value={quantity} onChange={(event) => setQuantity(event.target.value)}  className='p-2 rounded-md border w-full text-sm mb-2' placeholder='0'/>     
             <label htmlFor="" className='text-gray-600 font-extrabold'>Image</label>
-            <input  id="image"
+            <input  required id="image"
             type="file"
             name="image"
             accept="image/*"  onChange={handleFileChange}  className='p-2 rounded-md border w-full text-sm mb-2'/>
