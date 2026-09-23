@@ -1,8 +1,20 @@
 import { Search, X } from 'lucide-react'
 import React, { useState } from 'react'
+import { useForm } from './store/strore'
 
 function Product() {
     const [open, setOpen] = useState<Boolean>(false)
+    const [image, setImage] = useState<File | null>(null)
+    const { name, price,quantity,
+        setName, setPrice, setQuantity
+    } = useForm()
+
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0]
+        if (!file) return    
+        setImage(file)
+      }
+
   return (
     <div className='relative h-screen bg-gray-50'>
         <div className='fixed h-[10vh] w-full bg-white shadow-md flex items-center'>
@@ -15,19 +27,22 @@ function Product() {
             <button onClick={() => setOpen(!open)} className='border px-8 rounded-md cursor-pointer text-gray-700 font-extrabold'>Add</button>
           </div>
         </div> 
-        <div className={`${open ? 'absolute' : 'hidden'} transition-all duration-300 bg-white rounded-md shadow-md top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-4 w-[30%] flex flex-col`}>
+        <div className={`${open ? 'absolute' : 'hidden'} transition-all duration-300 bg-white rounded-md shadow-md top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-4 w-full px-2 md:w-[30%] flex flex-col`}>
         <div className='w-full flex justify-end'>
             <X onClick={() => setOpen(!open)} className='text-gray-600 h-5 w-5 cursor-pointer'/>
         </div>
         <form action="" className='w-full'>
             <label htmlFor="" className='text-gray-600 font-extrabold'>Name</label>
-            <input type="text" className='p-2 rounded-md border w-full text-sm mb-2' placeholder='Product name...'/>      
+            <input type="text" value={name} onChange={(event) => setName(event.target.value)}  className='p-2 rounded-md border w-full text-sm mb-2' placeholder='Product name...'/>      
             <label htmlFor="" className='text-gray-600 font-extrabold'>Price</label>
-            <input type="number" className='p-2 rounded-md border w-full text-sm mb-2' placeholder='0'/>     
+            <input type="number" value={price} onChange={(event) => setPrice(event.target.value)}  className='p-2 rounded-md border w-full text-sm mb-2' placeholder='0'/>     
             <label htmlFor="" className='text-gray-600 font-extrabold'>Quantity</label>
-            <input type="number" className='p-2 rounded-md border w-full text-sm mb-2' placeholder='0'/>     
+            <input type="number" value={quantity} onChange={(event) => setQuantity(event.target.value)}  className='p-2 rounded-md border w-full text-sm mb-2' placeholder='0'/>     
             <label htmlFor="" className='text-gray-600 font-extrabold'>Image</label>
-            <input type="file" className='p-2 rounded-md border w-full text-sm mb-2'/>
+            <input  id="image"
+            type="file"
+            name="image"
+            accept="image/*"  onChange={handleFileChange}  className='p-2 rounded-md border w-full text-sm mb-2'/>
             <button className='py-2 w-full bg-black text-white font-extrabold rounded-md mt-2 cursor-pointer'>Add product</button>
         </form>
         </div>     
