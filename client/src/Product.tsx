@@ -6,8 +6,8 @@ import toast from 'react-hot-toast'
 function Product() {
     const [open, setOpen] = useState<Boolean>(false)
     const [image, setImage] = useState<File | null>(null)
-    const {setProduct,products, createProduct} = useProducts()
-    const [openDelete, setopenDelete] = useState<Boolean>(true)
+    const {setProduct,products, createProduct,product,singleProduct} = useProducts()
+    const [openDelete, setopenDelete] = useState<Boolean>(false)
     const { name, price,quantity,
         setName, setPrice, setQuantity
     } = useForm()
@@ -51,9 +51,6 @@ function Product() {
         setProduct()
     },[])
 
-   
-    
-    console.log(products)
 
   return (
     <div className='relative h-screen bg-gray-50'>
@@ -98,7 +95,7 @@ function Product() {
                         <p className='font-extrabold text-xl text-gray-700'>KES {items.price}</p>  
                      </div>
                      <div className='flex gap-2'>
-                        <Trash className='h-4 w-4 text-red-400 cursor-pointer rounded-md'>
+                        <Trash onClick={() => {singleProduct(items.id), setopenDelete(!openDelete)}} className='h-4 w-4 text-red-400 cursor-pointer rounded-md'>
                             <title>Delete</title>
                         </Trash>
                         <Edit className='h-4 w-4 text-green-400 cursor-pointer  rounded-md'>
@@ -113,8 +110,9 @@ function Product() {
            {/*Delete dialogue  */}
         <div className={`${openDelete ? 'absolute' : 'hidden'} transition-all duration-300 bg-white rounded-md shadow-md top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-4 w-[40%] px-2 md:w-[30%] flex flex-col`}>
          <h1 className='font-extrabold text-center'>Are you sure you want to delete ?</h1>
+         <p className='font-extrabold text-center text-xl text-gray-600'>{product.map((item) => item.name)}</p>
          <div className='w-full mt-2 flex justify-end gap-4'>
-          <button  className='text-sm py-2 bg-black cursor-pointer text-white font-extrabold px-8 rounded-md'>Cancel</button>
+          <button onClick={() => setopenDelete(!openDelete)}  className='text-sm py-2 bg-black cursor-pointer text-white font-extrabold px-8 rounded-md'>Cancel</button>
           <button className='text-sm py-2 bg-red-600 cursor-pointer text-white font-extrabold px-8 rounded-md'>Delete</button> 
          </div>      
         </div> 

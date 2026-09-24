@@ -33,7 +33,7 @@ export const useForm = create<FormDatas>()(
 )
 
 interface ProductItem {
-    id:number,
+    id:string,
     name: string,
     price: string,
     quantity: string,
@@ -51,6 +51,10 @@ interface ProductState {
     product: ProductItem[],
     response: AddResponse | null,
     setProduct: () => void,
+    deleteProduct: (productID: string) => Promise<{
+        success: boolean,
+        message: string
+    }>,
     singleProduct: (productID: string) => void,
     createProduct: (formData: FormData) => Promise<{
         success: boolean,
@@ -64,6 +68,11 @@ export const useProducts = create<ProductState>()(
             products: [],
             product:[],
             response: null,
+            deleteProduct: async (productID: string) => {
+                const res = await axios.delete(`http://localhost:3000/api/products/deleteProduct/${productID}`)
+                const { message, success} = res.data
+                return { message, success}
+            },
             singleProduct:async (productID: string) => {
                 const res = await axios.get(`http://localhost:3000/api/products/singleProduct/${productID}`)
                 const { result, message, success} = res.data
