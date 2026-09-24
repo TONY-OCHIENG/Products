@@ -6,7 +6,7 @@ import toast from 'react-hot-toast'
 function Product() {
     const [open, setOpen] = useState<Boolean>(false)
     const [image, setImage] = useState<File | null>(null)
-    const {response, createProduct} = useProducts()
+    const {setProduct,products, createProduct} = useProducts()
     const { name, price,quantity,
         setName, setPrice, setQuantity
     } = useForm()
@@ -45,8 +45,11 @@ function Product() {
 
     }
 
-    // console.log("products",products)
-
+    useEffect(() => {
+        setProduct()
+    },[])
+    
+    console.log(products)
 
   return (
     <div className='relative h-screen bg-gray-50'>
@@ -66,7 +69,7 @@ function Product() {
         </div>
         <form action="" className='w-full' onSubmit={handleSubmit}>
             <label htmlFor="" className='text-gray-600 font-extrabold'>Name</label>
-            <input  type="text" name='name' value={name} onChange={(event) => setName(event.target.value)}  className='p-2 rounded-md border w-full text-sm mb-2' placeholder='Product name...'/>      
+            <input  required type="text" name='name' value={name} onChange={(event) => setName(event.target.value)}  className='p-2 rounded-md border w-full text-sm mb-2' placeholder='Product name...'/>      
             <label htmlFor="" className='text-gray-600 font-extrabold'>Price</label>
             <input required type="number" name='price' value={price} onChange={(event) => setPrice(event.target.value)}  className='p-2 rounded-md border w-full text-sm mb-2' placeholder='0'/>     
             <label htmlFor="" className='text-gray-600 font-extrabold'>Quantity</label>

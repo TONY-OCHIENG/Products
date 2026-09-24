@@ -48,6 +48,7 @@ interface AddResponse {
 interface ProductState {
     products: ProductItem[],
     response: AddResponse | null,
+    setProduct: () => void,
     createProduct: (formData: FormData) => Promise<{
         success: boolean,
         message: string
@@ -59,6 +60,13 @@ export const useProducts = create<ProductState>()(
         (set) => ({
             products: [],
             response: null,
+            setProduct: async () => {
+              const res = await axios.get("http://localhost:3000/api/products/allProducts")
+              const { result } = res.data
+              set(() => ({
+                products: result
+              }))
+            },
             createProduct: async (formData: FormData) => {
                 const res = await axios.post<AddResponse>(
                     "http://localhost:3000/api/products/addProducts",
