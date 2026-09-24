@@ -1,4 +1,4 @@
-import { Search, X } from 'lucide-react'
+import { Edit, Search, Trash, X } from 'lucide-react'
 import React, { useEffect, useState, type ChangeEvent } from 'react'
 import { useForm, useProducts } from './store/strore'
 import toast from 'react-hot-toast'
@@ -7,6 +7,7 @@ function Product() {
     const [open, setOpen] = useState<Boolean>(false)
     const [image, setImage] = useState<File | null>(null)
     const {setProduct,products, createProduct} = useProducts()
+    const [openDelete, setopenDelete] = useState<Boolean>(true)
     const { name, price,quantity,
         setName, setPrice, setQuantity
     } = useForm()
@@ -85,18 +86,38 @@ function Product() {
             <button type='submit' className='py-2 w-full bg-black text-white font-extrabold rounded-md mt-2 cursor-pointer'>Add product</button>
         </form>
         </div> 
-        <div className='w-[80%] mx-auto py-30 grid grid-cols-2 md:grid-cols-4 gap-2'>
+        <div className='md:w-[80%] w-full px-2 h-screen mx-auto py-30 grid grid-cols-2 md:grid-cols-4 gap-2'>
           {
             products.map((items) => (
                 <div key={items.id} className='p-2 rounded-md shadow-md bg-white h-[250px]'>
                     <img src={`http://localhost:3000/images/`+ items.image}  alt="" className='w-full object-cover h-[150px]'/> 
-                    <h1 className='text-gray-600 font-extrabold mt-2'>{items.name}</h1>    
-                    <p className='text-sm text-gray-400'>Quantity {items.quantity}psc</p> 
-                    <p className='font-extrabold text-xl text-gray-700'>KES {items.price}</p>              
+                    <div className='flex justify-between mt-2 '>
+                     <div>
+                        <h1 className='text-gray-600 font-extrabold '>{items.name}</h1>    
+                        <p className='text-sm text-gray-400'>Quantity {items.quantity}psc</p> 
+                        <p className='font-extrabold text-xl text-gray-700'>KES {items.price}</p>  
+                     </div>
+                     <div className='flex gap-2'>
+                        <Trash className='h-4 w-4 text-red-400 cursor-pointer rounded-md'>
+                            <title>Delete</title>
+                        </Trash>
+                        <Edit className='h-4 w-4 text-green-400 cursor-pointer  rounded-md'>
+                            <title>Edit</title>
+                        </Edit>
+                     </div>
+                    </div>            
                 </div>
             ))
           }
-        </div>    
+        </div> 
+           {/*Delete dialogue  */}
+        <div className={`${openDelete ? 'absolute' : 'hidden'} transition-all duration-300 bg-white rounded-md shadow-md top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-4 w-[40%] px-2 md:w-[30%] flex flex-col`}>
+         <h1 className='font-extrabold text-center'>Are you sure you want to delete ?</h1>
+         <div className='w-full mt-2 flex justify-end gap-4'>
+          <button  className='text-sm py-2 bg-black cursor-pointer text-white font-extrabold px-8 rounded-md'>Cancel</button>
+          <button className='text-sm py-2 bg-red-600 cursor-pointer text-white font-extrabold px-8 rounded-md'>Delete</button> 
+         </div>      
+        </div> 
     </div>
   )
 }
