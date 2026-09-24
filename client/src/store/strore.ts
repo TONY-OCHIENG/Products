@@ -36,31 +36,42 @@ interface ProductItem {
     name: string,
     price: string,
     quantity: string,
-    image: File
+    image: string   // see note below
 }
 
-interface ProductState{
-    products: ProductItem[],
-    createProduct: (formData: FormData) => Promise<void>
-}
-
-interface AddResponse{
+interface AddResponse {
     message: string,
     success: boolean,
+    product?: ProductItem   // adjust to whatever your API actually returns
 }
 
-interface Response{
-    response: AddResponse[]
+interface ProductState {
+    products: ProductItem[],
+    response: AddResponse | null,
+    createProduct: (formData: FormData) => Promise<{
+        success: boolean,
+        message: string
+    }>
 }
 
-export const useProducts = create<ProductState & Response>()(
+export const useProducts = create<ProductState>()(
     devtools(
         (set) => ({
             products: [],
-            response: [],
+            response: null,
             createProduct: async (formData: FormData) => {
-                const res = await axios.post<ProductItem & AddResponse>("http://localhost:3000/api/products/addProducts", formData)
-                set((state) => ({ products: [...state.products, res.data], response: [res.data] }))
+                const res = await axios.post<AddResponse>(
+                    "http://localhost:3000/api/products/addProducts",
+                    formData
+                )
+                const { success, message, product } = res.data
+
+                set((state) => ({
+                    products: product ? [...state.products, product] : state.products,
+                    response: res.data,
+                }))
+
+                return { success, message }
             },
         }),
         { name: "products-store" }

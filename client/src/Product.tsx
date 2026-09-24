@@ -16,7 +16,6 @@ function Product() {
         if (!file) return    
         setImage(file)
     }
-
     const handleSubmit = async (event: ChangeEvent) : Promise<void> => {
         event.preventDefault()
         setOpen(false)
@@ -29,17 +28,17 @@ function Product() {
         formData.append('quantity',quantity)
         formData.append('image',image)
 
-        await createProduct(formData)
+        // await createProduct(formData)
+        const {success, message} = await createProduct(formData)
 
-        
-        if( response.length > 0) {
-            if (response[0].success) {
-                toast.success(response[0].message)
-            } else  {
-                toast.error(response[0].message)
-            }        
+        if (success) {
+            toast.success(message)
+        } else {
+            toast.error(message)
         }
 
+        
+       
         setName("")
         setPrice("")
         setQuantity("")
