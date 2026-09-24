@@ -37,6 +37,16 @@ export const getAllProducts = (req, res) => {
     }
 }
 
+export const singleProduct = (req, res) => {
+    const { id } = req.params
+    try {
+        
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({success: false, message: "Internal server error"})
+    }
+}
+
 export const updateProduct = (req, res) => {
     const { name, price, quantity} = req.body
     const { id } = req.params
