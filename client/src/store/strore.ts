@@ -33,6 +33,7 @@ export const useForm = create<FormDatas>()(
 )
 
 interface ProductItem {
+    id:number,
     name: string,
     price: string,
     quantity: string,

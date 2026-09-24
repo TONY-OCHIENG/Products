@@ -33,6 +33,7 @@ function Product() {
 
         if (success) {
             toast.success(message)
+            setProduct()
         } else {
             toast.error(message)
         }
@@ -48,12 +49,14 @@ function Product() {
     useEffect(() => {
         setProduct()
     },[])
+
+   
     
     console.log(products)
 
   return (
     <div className='relative h-screen bg-gray-50'>
-        <div className='fixed h-[10vh] w-full bg-white shadow-md flex items-center'>
+        <div className='fixed top-0 h-[10vh] w-full bg-white shadow-md flex items-center'>
           <div className='md:w-[80%] mx-auto w-full px-2  justify-between flex'>
             <h1 className='font-extrabold text-2xl text-gray-600'>Products</h1>
             <div className='flex gap-4 w-[40%] p-2 border rounded-full border-gray-400'>
@@ -81,7 +84,19 @@ function Product() {
             accept="image/*"  onChange={handleFileChange}  className='p-2 rounded-md border w-full text-sm mb-2'/>
             <button type='submit' className='py-2 w-full bg-black text-white font-extrabold rounded-md mt-2 cursor-pointer'>Add product</button>
         </form>
-        </div>     
+        </div> 
+        <div className='w-[80%] mx-auto py-30 grid grid-cols-2 md:grid-cols-4 gap-2'>
+          {
+            products.map((items) => (
+                <div key={items.id} className='p-2 rounded-md shadow-md bg-white h-[250px]'>
+                    <img src={`http://localhost:3000/images/`+ items.image}  alt="" className='w-full object-cover h-[150px]'/> 
+                    <h1 className='text-gray-600 font-extrabold mt-2'>{items.name}</h1>    
+                    <p className='text-sm text-gray-400'>Quantity {items.quantity}psc</p> 
+                    <p className='font-extrabold text-xl text-gray-700'>KES {items.price}</p>              
+                </div>
+            ))
+          }
+        </div>    
     </div>
   )
 }
