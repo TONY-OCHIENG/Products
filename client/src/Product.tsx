@@ -6,7 +6,9 @@ import toast from 'react-hot-toast'
 function Product() {
     const [open, setOpen] = useState<Boolean>(false)
     const [image, setImage] = useState<File | null>(null)
-    const {setProduct,products, createProduct,product,singleProduct} = useProducts()
+    const {setProduct,products, createProduct,product,singleProduct,
+        deleteProduct
+    } = useProducts()
     const [openDelete, setopenDelete] = useState<Boolean>(false)
     const { name, price,quantity,
         setName, setPrice, setQuantity
@@ -50,7 +52,17 @@ function Product() {
     useEffect(() => {
         setProduct()
     },[])
+    
+    //delete a product
 
+    const handleDelete = async (id: string) => {
+        const { success, message} = await deleteProduct(id)
+        if (success) {
+            toast.success(message)
+        } else {
+            toast.error(message)
+        }
+    }  
 
   return (
     <div className='relative h-screen bg-gray-50'>
