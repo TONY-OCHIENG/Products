@@ -59,13 +59,14 @@ function Product() {
         const { success, message} = await deleteProduct(id)
         if (success) {
             toast.success(message)
+            setProduct()
         } else {
             toast.error(message)
         }
     }  
 
   return (
-    <div className='relative h-screen bg-gray-50'>
+    <div className='relative  bg-gray-50'>
         <div className='fixed top-0 h-[10vh] w-full bg-white shadow-md flex items-center'>
           <div className='md:w-[80%] mx-auto w-full px-2  justify-between flex'>
             <h1 className='font-extrabold text-2xl text-gray-600'>Products</h1>
@@ -76,7 +77,7 @@ function Product() {
             <button onClick={() => setOpen(!open)} className='border px-8 rounded-md cursor-pointer text-gray-700 font-extrabold'>Add</button>
           </div>
         </div> 
-        <div className={`${open ? 'absolute' : 'hidden'} transition-all duration-300 bg-white rounded-md shadow-md top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-4 w-full px-2 md:w-[30%] flex flex-col`}>
+        <div className={`${open ? 'absolute' : 'hidden'} fixed transition-all duration-300 bg-white rounded-md shadow-md top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-4 w-full px-2 md:w-[30%] flex flex-col`}>
         <div className='w-full flex justify-end'>
             <X onClick={() => setOpen(!open)} className='text-gray-600 h-5 w-5 cursor-pointer'/>
         </div>
@@ -95,7 +96,7 @@ function Product() {
             <button type='submit' className='py-2 w-full bg-black text-white font-extrabold rounded-md mt-2 cursor-pointer'>Add product</button>
         </form>
         </div> 
-        <div className='md:w-[80%] w-full px-2 h-screen mx-auto py-30 grid grid-cols-2 md:grid-cols-4 gap-2'>
+        <div className='md:w-[80%] w-full px-2  mx-auto py-30 grid grid-cols-2 md:grid-cols-4 gap-2'>
           {
             products.map((items) => (
                 <div key={items.id} className='p-2 rounded-md shadow-md bg-white h-[250px]'>
@@ -120,13 +121,19 @@ function Product() {
           }
         </div> 
            {/*Delete dialogue  */}
-        <div className={`${openDelete ? 'absolute' : 'hidden'} transition-all duration-300 bg-white rounded-md shadow-md top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-4 w-[40%] px-2 md:w-[30%] flex flex-col`}>
-         <h1 className='font-extrabold text-center'>Are you sure you want to delete ?</h1>
-         <p className='font-extrabold text-center text-xl text-gray-600'>{product.map((item) => item.name)}</p>
-         <div className='w-full mt-2 flex justify-end gap-4'>
-          <button onClick={() => setopenDelete(!openDelete)}  className='text-sm py-2 bg-black cursor-pointer text-white font-extrabold px-8 rounded-md'>Cancel</button>
-          <button className='text-sm py-2 bg-red-600 cursor-pointer text-white font-extrabold px-8 rounded-md'>Delete</button> 
-         </div>      
+        <div className={`${openDelete ? 'absolute' : 'hidden'} fixed transition-all duration-300 bg-white rounded-md shadow-md top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-4 w-[40%] px-2 md:w-[30%] flex flex-col`}>
+        {
+            product.map((item) => (
+               <div>
+                 <h1 className='font-extrabold text-center'>Are you sure you want to delete ?</h1>
+                    <p className='font-extrabold text-center text-xl text-gray-600'>{item.name}</p>
+                    <div className='w-full mt-2 flex justify-end gap-4'>
+                    <button onClick={() => setopenDelete(!openDelete)}  className='text-sm py-2 bg-black cursor-pointer text-white font-extrabold px-8 rounded-md'>Cancel</button>
+                    <button onClick={() => {handleDelete(item.id) , setopenDelete(!openDelete)}} className='text-sm py-2 bg-red-600 cursor-pointer text-white font-extrabold px-8 rounded-md'>Delete</button> 
+                    </div>   
+               </div> 
+            ))
+        }  
         </div> 
     </div>
   )
