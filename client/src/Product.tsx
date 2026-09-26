@@ -7,7 +7,7 @@ function Product() {
     const [open, setOpen] = useState<Boolean>(false)
     const [image, setImage] = useState<File | null>(null)
     const {setProduct,products, createProduct,product,singleProduct,
-        deleteProduct
+        deleteProduct, editProduct
     } = useProducts()
     const [openDelete, setopenDelete] = useState<Boolean>(false)
     const [openEdit, setOpenEdit] = useState<Boolean>(false)
@@ -48,6 +48,22 @@ function Product() {
         setPrice("")
         setQuantity("")
 
+    }
+
+    // A function that handle product update
+
+    const handleUpdate = async (productID: string) => {
+        const formData = new FormData()
+        formData.append('name',name)
+        formData.append('price',price)
+        formData.append('quantity',quantity)
+
+        const {message, success} = await editProduct(formData, productID)
+        if (success) {
+            toast.success(message)
+        } else {
+            toast.error(message)
+        }
     }
 
     useEffect(() => {
