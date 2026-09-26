@@ -88,24 +88,18 @@ function Product() {
 
     const handleUpdate = async (productID: string) => {
       singleProduct(productID)
-      const formData = new FormData()
-      formData.append('name',edit.name)
-      formData.append('price',edit.price)
-      formData.append('quantity',edit.quantity) 
 
-      console.log(edit.name)
-      console.log(edit.price)
-      console.log(edit.quantity)
-      console.log(edit)
-      console.log(formData)
-
-
-      const { message, success} = await editProduct(formData, productID)
+      const { message, success} = await editProduct(edit, productID)
       if (success) {
         toast.success(message)
+        setProduct()
+        setOpenEdit(!openEdit)
       } else {
         toast.error(message)
+        setProduct()
+        setOpenEdit(!openEdit)
       }
+
     } 
     
     const handleOpenEdit = async (productID: string) => {

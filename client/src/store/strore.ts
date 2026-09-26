@@ -61,7 +61,7 @@ interface ProductState {
     singleUpdateProduct: (productID: string) => Promise<{
         productDetail: ProductItem[]
     }>,
-    editProduct: (formData: FormData, productID: string) => Promise<{
+    editProduct: (product: Product, productID: string) => Promise<{
         success: boolean,
         message: string
     }>,
@@ -69,6 +69,12 @@ interface ProductState {
         success: boolean,
         message: string
     }>
+}
+
+interface Product{
+    name:string,
+    price: string,
+    quantity: string
 }
 
 export const useProducts = create<ProductState>()(
@@ -87,8 +93,8 @@ export const useProducts = create<ProductState>()(
                 const { message, success} = res.data
                 return { message, success}
             },
-            editProduct: async (formData: FormData, productID: string) => {
-                const res = await axios.put<AddResponse>(`http://localhost:3000/api/products/updateProduct/${productID}`,formData)
+            editProduct: async (product: Product, productID: string) => {
+                const res = await axios.put<AddResponse>(`http://localhost:3000/api/products/updateProduct/${productID}`,product)
                 const { message, success} = res.data
                 return {message, success}
             },
