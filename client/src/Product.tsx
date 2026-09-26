@@ -10,6 +10,7 @@ function Product() {
         deleteProduct
     } = useProducts()
     const [openDelete, setopenDelete] = useState<Boolean>(false)
+    const [openEdit, setOpenEdit] = useState<Boolean>(false)
     const { name, price,quantity,
         setName, setPrice, setQuantity
     } = useForm()
@@ -111,7 +112,7 @@ function Product() {
                         <Trash onClick={() => {singleProduct(items.id), setopenDelete(!openDelete)}} className='h-4 w-4 text-red-400 cursor-pointer rounded-md'>
                             <title>Delete</title>
                         </Trash>
-                        <Edit className='h-4 w-4 text-green-400 cursor-pointer  rounded-md'>
+                        <Edit onClick={() => {singleProduct(items.id),setOpenEdit(!openEdit)}} className='h-4 w-4 text-green-400 cursor-pointer  rounded-md'>
                             <title>Edit</title>
                         </Edit>
                      </div>
@@ -134,6 +135,25 @@ function Product() {
                </div> 
             ))
         }  
+        </div> 
+        {/* Update dialogue */}
+        <div className={`${openEdit ? 'absolute' : 'hidden'} fixed transition-all duration-300 bg-white rounded-md shadow-md top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-4 w-full px-2 md:w-[30%] flex flex-col`}>
+        <div className='w-full flex justify-end'>
+            <X onClick={() => setOpenEdit(!openEdit)} className='text-gray-600 h-5 w-5 cursor-pointer'/>
+        </div>
+          {
+            product.map((item) => (
+                 <form action="" className='w-full' onSubmit={handleSubmit}>
+                    <label htmlFor="" className='text-gray-600 font-extrabold'>Name</label>
+                    <input  required type="text" name='name' value={item.name} onChange={(event) => setName(event.target.value)}  className='p-2 rounded-md border w-full text-sm mb-2' placeholder='Product name...'/>      
+                    <label htmlFor="" className='text-gray-600 font-extrabold'>Price</label>
+                    <input required type="number" name='price' value={item.price} onChange={(event) => setPrice(event.target.value)}  className='p-2 rounded-md border w-full text-sm mb-2' placeholder='0'/>     
+                    <label htmlFor="" className='text-gray-600 font-extrabold'>Quantity</label>
+                    <input required type="number" name='quantity' value={item.quantity} onChange={(event) => setQuantity(event.target.value)}  className='p-2 rounded-md border w-full text-sm mb-2' placeholder='0'/>                 
+                    <button type='submit' className='py-2 w-full bg-black text-white font-extrabold rounded-md mt-2 cursor-pointer'>Edit product</button>
+                </form>
+            ))
+          }
         </div> 
     </div>
   )

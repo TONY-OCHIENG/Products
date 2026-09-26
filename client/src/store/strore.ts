@@ -56,6 +56,10 @@ interface ProductState {
         message: string
     }>,
     singleProduct: (productID: string) => void,
+    editProduct: (formData: FormData, productID: string) => Promise<{
+        success: boolean,
+        message: string
+    }>,
     createProduct: (formData: FormData) => Promise<{
         success: boolean,
         message: string
@@ -72,6 +76,11 @@ export const useProducts = create<ProductState>()(
                 const res = await axios.delete(`http://localhost:3000/api/products/deleteProduct/${productID}`)
                 const { message, success} = res.data
                 return { message, success}
+            },
+            editProduct: async (formData: FormData, productID: string) => {
+                const res = await axios.put(`http://localhost:3000/api/products/updateProduct/${productID}`,formData)
+                const { message, success} = res.data
+                return {message, success}
             },
             singleProduct:async (productID: string) => {
                 const res = await axios.get(`http://localhost:3000/api/products/singleProduct/${productID}`)
