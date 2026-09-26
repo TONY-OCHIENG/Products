@@ -61,6 +61,7 @@ function Product() {
         const {message, success} = await editProduct(formData, productID)
         if (success) {
             toast.success(message)
+            setProduct()
         } else {
             toast.error(message)
         }
@@ -77,8 +78,10 @@ function Product() {
         if (success) {
             toast.success(message)
             setProduct()
+            setOpenEdit(false)
         } else {
             toast.error(message)
+            setOpenEdit(false)
         }
     }  
 
@@ -159,14 +162,14 @@ function Product() {
         </div>
           {
             product.map((item) => (
-                 <form action="" className='w-full' onSubmit={handleSubmit}>
+                 <form action="" className='w-full'>
                     <label htmlFor="" className='text-gray-600 font-extrabold'>Name</label>
                     <input  required type="text" name='name' value={item.name} onChange={(event) => setName(event.target.value)}  className='p-2 rounded-md border w-full text-sm mb-2' placeholder='Product name...'/>      
                     <label htmlFor="" className='text-gray-600 font-extrabold'>Price</label>
                     <input required type="number" name='price' value={item.price} onChange={(event) => setPrice(event.target.value)}  className='p-2 rounded-md border w-full text-sm mb-2' placeholder='0'/>     
                     <label htmlFor="" className='text-gray-600 font-extrabold'>Quantity</label>
                     <input required type="number" name='quantity' value={item.quantity} onChange={(event) => setQuantity(event.target.value)}  className='p-2 rounded-md border w-full text-sm mb-2' placeholder='0'/>                 
-                    <button type='submit' className='py-2 w-full bg-black text-white font-extrabold rounded-md mt-2 cursor-pointer'>Edit product</button>
+                    <button type='button' onClick={() => handleUpdate(item.id)} className='py-2 w-full bg-black text-white font-extrabold rounded-md mt-2 cursor-pointer'>Edit product</button>
                 </form>
             ))
           }

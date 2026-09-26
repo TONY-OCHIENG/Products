@@ -32,6 +32,36 @@ export const useForm = create<FormDatas>()(
     }), {name: "use-form"})
 )
 
+// edit input data
+
+interface EditInputs{
+    edit_name: string,
+    edit_price: string,
+    edit_quantity: string
+}
+
+interface EditInputsAction{
+    setEditName: (edit_name: string) => void,
+    setEditPrice: (edit_price: string) => void,
+    setEditQuantity: (edit_quantity: string) => void
+}
+
+type EditProduct = EditInputs & EditInputsAction
+
+export const EditProducts = create<EditProduct>()(
+    devtools(
+        (set) => ({
+            edit_name: "",
+            edit_price: "",
+            edit_quantity: "",
+            setEditName: (edit_name) => set({edit_name}),
+            setEditPrice: (edit_price) => set({edit_price}),
+            setEditQuantity: (edit_quantity) => set({edit_quantity})
+        })
+        , {name: "Edit_Products"}
+    )
+)
+
 interface ProductItem {
     id:string,
     name: string,
