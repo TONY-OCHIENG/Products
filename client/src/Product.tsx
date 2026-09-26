@@ -3,12 +3,24 @@ import React, { useEffect, useState, type ChangeEvent } from 'react'
 import { useForm, useProducts } from './store/strore'
 import toast from 'react-hot-toast'
 
+type EDIT = {
+    name: string,
+    price: string,
+    quantity: string
+}
+
 function Product() {
     const [open, setOpen] = useState<Boolean>(false)
     const [image, setImage] = useState<File | null>(null)
     const {setProduct,products, createProduct,product,singleProduct,
-        deleteProduct, editProduct
+        deleteProduct, editProduct, singleUpdateProduct
     } = useProducts()
+    const [edit, setEdit] = useState<EDIT>({
+        name: "",
+        price: "",
+        quantity: ""
+    })
+
     const [openDelete, setopenDelete] = useState<Boolean>(false)
     const [openEdit, setOpenEdit] = useState<Boolean>(false)
     const { name, price,quantity,
@@ -52,20 +64,7 @@ function Product() {
 
     // A function that handle product update
 
-    const handleUpdate = async (productID: string) => {
-        const formData = new FormData()
-        formData.append('name',name)
-        formData.append('price',price)
-        formData.append('quantity',quantity)
-
-        const {message, success} = await editProduct(formData, productID)
-        if (success) {
-            toast.success(message)
-            setProduct()
-        } else {
-            toast.error(message)
-        }
-    }
+  
 
     useEffect(() => {
         setProduct()
@@ -83,8 +82,45 @@ function Product() {
             toast.error(message)
             setOpenEdit(false)
         }
-    }  
+    } 
+    
+    //A function that handles update product
 
+    const handleUpdate = async (productID: string) => {
+      singleProduct(productID)
+      const formData = new FormData()
+      formData.append('name',edit.name)
+      formData.append('price',edit.price)
+      formData.append('quantity',edit.quantity) 
+
+      console.log(edit.name)
+      console.log(edit.price)
+      console.log(edit.quantity)
+      console.log(edit)
+      console.log(formData)
+
+
+      const { message, success} = await editProduct(formData, productID)
+      if (success) {
+        toast.success(message)
+      } else {
+        toast.error(message)
+      }
+    } 
+    
+    const handleOpenEdit = async (productID: string) => {
+        singleProduct(productID)
+        const { productDetail } = await singleUpdateProduct(productID)
+        for( const item of productDetail) {
+            setEdit({
+                name: item.name,
+                price: item.price,
+                quantity: item.quantity
+            })
+        } 
+    }
+
+     
   return (
     <div className='relative  bg-gray-50'>
         <div className='fixed top-0 h-[10vh] w-full bg-white shadow-md flex items-center'>
@@ -131,7 +167,7 @@ function Product() {
                         <Trash onClick={() => {singleProduct(items.id), setopenDelete(!openDelete)}} className='h-4 w-4 text-red-400 cursor-pointer rounded-md'>
                             <title>Delete</title>
                         </Trash>
-                        <Edit onClick={() => {singleProduct(items.id),setOpenEdit(!openEdit)}} className='h-4 w-4 text-green-400 cursor-pointer  rounded-md'>
+                        <Edit onClick={() => {handleOpenEdit(items.id),setOpenEdit(!openEdit)}} className='h-4 w-4 text-green-400 cursor-pointer  rounded-md'>
                             <title>Edit</title>
                         </Edit>
                      </div>
@@ -141,7 +177,7 @@ function Product() {
           }
         </div> 
            {/*Delete dialogue  */}
-        <div className={`${openDelete ? 'absolute' : 'hidden'} fixed transition-all duration-300 bg-white rounded-md shadow-md top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-4 w-[40%] px-2 md:w-[30%] flex flex-col`}>
+        <div className={`${openDelete ? 'absolute' : 'hidden'} fixed transition-all duration-300 bg-white rounded-md shadow-md top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-4 w-[80%] px-2 md:w-[30%] flex flex-col`}>
         {
             product.map((item) => (
                <div>
@@ -155,25 +191,25 @@ function Product() {
             ))
         }  
         </div> 
-        {/* Update dialogue */}
-        <div className={`${openEdit ? 'absolute' : 'hidden'} fixed transition-all duration-300 bg-white rounded-md shadow-md top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-4 w-full px-2 md:w-[30%] flex flex-col`}>
+        {/* Update dialogue */}  
+           <div className={`${openEdit ? 'absolute' : 'hidden'} fixed transition-all duration-300 bg-white rounded-md shadow-md top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-4 w-full px-2 md:w-[30%] flex flex-col`}>
         <div className='w-full flex justify-end'>
             <X onClick={() => setOpenEdit(!openEdit)} className='text-gray-600 h-5 w-5 cursor-pointer'/>
         </div>
-          {
+        {
             product.map((item) => (
-                 <form action="" className='w-full'>
+                <form action="" className='w-full' onSubmit={handleSubmit}>
                     <label htmlFor="" className='text-gray-600 font-extrabold'>Name</label>
-                    <input  required type="text" name='name' value={item.name} onChange={(event) => setName(event.target.value)}  className='p-2 rounded-md border w-full text-sm mb-2' placeholder='Product name...'/>      
+                    <input  required type="text" name='name' value={edit.name} onChange={(event) => setEdit((prev) => ({ ...prev, name: event.target.value}))}  className='p-2 rounded-md border w-full text-sm mb-2' placeholder='Product name...'/>      
                     <label htmlFor="" className='text-gray-600 font-extrabold'>Price</label>
-                    <input required type="number" name='price' value={item.price} onChange={(event) => setPrice(event.target.value)}  className='p-2 rounded-md border w-full text-sm mb-2' placeholder='0'/>     
+                    <input required type="number" name='price' value={edit.price} onChange={(event) => setEdit((prev) =>({ ...prev, price: event.target.value}))}  className='p-2 rounded-md border w-full text-sm mb-2' placeholder='0'/>     
                     <label htmlFor="" className='text-gray-600 font-extrabold'>Quantity</label>
-                    <input required type="number" name='quantity' value={item.quantity} onChange={(event) => setQuantity(event.target.value)}  className='p-2 rounded-md border w-full text-sm mb-2' placeholder='0'/>                 
+                    <input required type="number" name='quantity' value={edit.quantity} onChange={(event) => setEdit((prev) => ({ ...prev, quantity: event.target.value}))}  className='p-2 rounded-md border w-full text-sm mb-2' placeholder='0'/>         
                     <button type='button' onClick={() => handleUpdate(item.id)} className='py-2 w-full bg-black text-white font-extrabold rounded-md mt-2 cursor-pointer'>Edit product</button>
                 </form>
             ))
-          }
-        </div> 
+        }
+        </div>       
     </div>
   )
 }

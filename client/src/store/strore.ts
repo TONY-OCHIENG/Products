@@ -25,42 +25,14 @@ export const useForm = create<FormDatas>()(
         price: "",
         quantity: "",
         image: null,
-        setName: (name) => set({name}),
-        setPrice: (price) => set({price}),
-        setQuantity:(quantity) => set({quantity}),
+        setName: (name) => set({name: name}),
+        setPrice: (price) => set({price: price}),
+        setQuantity:(quantity) => set({quantity: quantity}),
         setImage: (image) => set({image})
     }), {name: "use-form"})
 )
 
 // edit input data
-
-interface EditInputs{
-    edit_name: string,
-    edit_price: string,
-    edit_quantity: string
-}
-
-interface EditInputsAction{
-    setEditName: (edit_name: string) => void,
-    setEditPrice: (edit_price: string) => void,
-    setEditQuantity: (edit_quantity: string) => void
-}
-
-type EditProduct = EditInputs & EditInputsAction
-
-export const EditProducts = create<EditProduct>()(
-    devtools(
-        (set) => ({
-            edit_name: "",
-            edit_price: "",
-            edit_quantity: "",
-            setEditName: (edit_name) => set({edit_name}),
-            setEditPrice: (edit_price) => set({edit_price}),
-            setEditQuantity: (edit_quantity) => set({edit_quantity})
-        })
-        , {name: "Edit_Products"}
-    )
-)
 
 interface ProductItem {
     id:string,
@@ -86,6 +58,9 @@ interface ProductState {
         message: string
     }>,
     singleProduct: (productID: string) => void,
+    singleUpdateProduct: (productID: string) => Promise<{
+        productDetail: ProductItem[]
+    }>,
     editProduct: (formData: FormData, productID: string) => Promise<{
         success: boolean,
         message: string
@@ -102,13 +77,18 @@ export const useProducts = create<ProductState>()(
             products: [],
             product:[],
             response: null,
+            singleUpdateProduct: async (productID: string) => {
+                const res = await axios.get(`http://localhost:3000/api/products/singleProduct/${productID}`)
+                const { result } = res.data
+                return {productDetail: result}
+            },
             deleteProduct: async (productID: string) => {
                 const res = await axios.delete(`http://localhost:3000/api/products/deleteProduct/${productID}`)
                 const { message, success} = res.data
                 return { message, success}
             },
             editProduct: async (formData: FormData, productID: string) => {
-                const res = await axios.put(`http://localhost:3000/api/products/updateProduct/${productID}`,formData)
+                const res = await axios.put<AddResponse>(`http://localhost:3000/api/products/updateProduct/${productID}`,formData)
                 const { message, success} = res.data
                 return {message, success}
             },
