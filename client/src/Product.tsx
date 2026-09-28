@@ -13,8 +13,7 @@ type EDIT = {
 function Product() {
     const [open, setOpen] = useState<Boolean>(false)
     const [image, setImage] = useState<File | null>(null)
-    const [dark, setDark] = useState<Boolean>(false)
-    const { theme, setTheme,toggle} = useTheme()
+    const { theme, toggle} = useTheme()
     const {setProduct,products, createProduct,product,singleProduct,
         deleteProduct, editProduct, singleUpdateProduct
     } = useProducts()
@@ -123,10 +122,7 @@ function Product() {
         <div className='fixed top-0 h-[10vh] w-full dark:bg-gray-900 dark:text-white bg-white shadow-md flex items-center'>
           <div className='md:w-[80%] mx-auto w-full px-2  justify-between flex'>
             <h1 className='font-extrabold text-2xl text-gray-600 dark:text-gray-200'>Products</h1>
-            <div className='flex gap-4 w-[40%] p-2 border rounded-full border-gray-400'>
-                <Search className='h-5 w-5 ml-4 text-gray-400'/>
-                <input type="text" className='text-sm outline-none w-[80%]' placeholder='search products...'/>                
-            </div>
+          
             <div className='flex gap-5 items-center'>
                 {
                     theme === "dark" ? <Sun onClick={()=> toggle()}/> : <Moon onClick={() => toggle()}/>
