@@ -1,7 +1,8 @@
-import { Edit, Search, Trash, X } from 'lucide-react'
+import { Edit, Key, Moon, Search, Sun, Trash, X } from 'lucide-react'
 import React, { useEffect, useState, type ChangeEvent } from 'react'
 import { useForm, useProducts } from './store/strore'
 import toast from 'react-hot-toast'
+import { useTheme } from './Theme'
 
 type EDIT = {
     name: string,
@@ -12,6 +13,8 @@ type EDIT = {
 function Product() {
     const [open, setOpen] = useState<Boolean>(false)
     const [image, setImage] = useState<File | null>(null)
+    const [dark, setDark] = useState<Boolean>(false)
+    const { theme, setTheme,toggle} = useTheme()
     const {setProduct,products, createProduct,product,singleProduct,
         deleteProduct, editProduct, singleUpdateProduct
     } = useProducts()
@@ -112,11 +115,11 @@ function Product() {
                 quantity: item.quantity
             })
         } 
-    }
-
+    } 
+    
      
   return (
-    <div className='relative  bg-gray-50 dark dark:bg-gray-800'>
+    <div className={`relative  bg-gray-50 ${theme === 'light' ? '' : 'dark'} transition-all duration-100 ease-in  dark:bg-gray-800`}>
         <div className='fixed top-0 h-[10vh] w-full dark:bg-gray-900 dark:text-white bg-white shadow-md flex items-center'>
           <div className='md:w-[80%] mx-auto w-full px-2  justify-between flex'>
             <h1 className='font-extrabold text-2xl text-gray-600 dark:text-gray-200'>Products</h1>
@@ -124,21 +127,26 @@ function Product() {
                 <Search className='h-5 w-5 ml-4 text-gray-400'/>
                 <input type="text" className='text-sm outline-none w-[80%]' placeholder='search products...'/>                
             </div>
-            <button onClick={() => setOpen(!open)} className='border px-8 dark:bg-gray-200 rounded-md cursor-pointer text-gray-700 font-extrabold'>Add</button>
+            <div className='flex gap-5 items-center'>
+                {
+                    theme === "dark" ? <Sun onClick={()=> toggle()}/> : <Moon onClick={() => toggle()}/>
+                }
+                <button onClick={() => setOpen(!open)} className='border px-8 py-1 dark:bg-gray-200 rounded-md cursor-pointer text-gray-700 font-extrabold'>Add</button>
+            </div>
           </div>
         </div> 
-        <div className={`${open ? 'absolute' : 'hidden'} fixed transition-all duration-300 bg-white rounded-md shadow-md top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-4 w-full px-2 md:w-[30%] flex flex-col`}>
+        <div className={`${open ? 'absolute' : 'hidden'} fixed transition-all duration-300 dark:bg-gray-700 bg-white rounded-md shadow-md top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-4 w-full px-2 md:w-[30%] flex flex-col`}>
         <div className='w-full flex justify-end'>
-            <X onClick={() => setOpen(!open)} className='text-gray-600 h-5 w-5 cursor-pointer'/>
+            <X onClick={() => setOpen(!open)} className='dark:text-gray-200 text-gray-600 h-5 w-5 cursor-pointer'/>
         </div>
         <form action="" className='w-full' onSubmit={handleSubmit}>
-            <label htmlFor="" className='text-gray-600 font-extrabold'>Name</label>
+            <label htmlFor="" className='dark:text-gray-200 text-gray-600 font-extrabold'>Name</label>
             <input  required type="text" name='name' value={name} onChange={(event) => setName(event.target.value)}  className='p-2 rounded-md border w-full text-sm mb-2' placeholder='Product name...'/>      
-            <label htmlFor="" className='text-gray-600 font-extrabold'>Price</label>
+            <label htmlFor="" className='dark:text-gray-200 text-gray-600 font-extrabold'>Price</label>
             <input required type="number" name='price' value={price} onChange={(event) => setPrice(event.target.value)}  className='p-2 rounded-md border w-full text-sm mb-2' placeholder='0'/>     
-            <label htmlFor="" className='text-gray-600 font-extrabold'>Quantity</label>
+            <label htmlFor="" className='dark:text-gray-200 text-gray-600 font-extrabold'>Quantity</label>
             <input required type="number" name='quantity' value={quantity} onChange={(event) => setQuantity(event.target.value)}  className='p-2 rounded-md border w-full text-sm mb-2' placeholder='0'/>     
-            <label htmlFor="" className='text-gray-600 font-extrabold'>Image</label>
+            <label htmlFor="" className='dark:text-gray-200 text-gray-600 font-extrabold'>Image</label>
             <input  required id="image"
             type="file"
             name="image"
@@ -171,7 +179,7 @@ function Product() {
           }
         </div> 
            {/*Delete dialogue  */}
-        <div className={`${openDelete ? 'absolute' : 'hidden'} fixed transition-all duration-300 bg-white rounded-md shadow-md top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-4 w-[80%] px-2 md:w-[30%] flex flex-col`}>
+        <div className={`${openDelete ? 'absolute' : 'hidden'} fixed transition-all duration-300 dark:bg-gray-700 bg-white rounded-md shadow-md top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-4 w-[80%] px-2 md:w-[30%] flex flex-col`}>
         {
             product.map((item) => (
                <div>
@@ -186,9 +194,9 @@ function Product() {
         }  
         </div> 
         {/* Update dialogue */}  
-           <div className={`${openEdit ? 'absolute' : 'hidden'} fixed transition-all duration-300 bg-white rounded-md shadow-md top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-4 w-full px-2 md:w-[30%] flex flex-col`}>
+           <div className={`${openEdit ? 'absolute' : 'hidden'} fixed transition-all duration-300 dark:bg-gray-600 bg-white rounded-md shadow-md top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-4 w-full px-2 md:w-[30%] flex flex-col`}>
         <div className='w-full flex justify-end'>
-            <X onClick={() => setOpenEdit(!openEdit)} className='text-gray-600 h-5 w-5 cursor-pointer'/>
+            <X onClick={() => setOpenEdit(!openEdit)} className='dark:text-gray-200 text-gray-600 h-5 w-5 cursor-pointer'/>
         </div>
         {
             product.map((item) => (
