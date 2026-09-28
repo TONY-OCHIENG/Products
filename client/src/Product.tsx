@@ -116,15 +116,15 @@ function Product() {
 
      
   return (
-    <div className='relative  bg-gray-50'>
-        <div className='fixed top-0 h-[10vh] w-full bg-white shadow-md flex items-center'>
+    <div className='relative  bg-gray-50 dark dark:bg-gray-800'>
+        <div className='fixed top-0 h-[10vh] w-full dark:bg-gray-900 dark:text-white bg-white shadow-md flex items-center'>
           <div className='md:w-[80%] mx-auto w-full px-2  justify-between flex'>
-            <h1 className='font-extrabold text-2xl text-gray-600'>Products</h1>
+            <h1 className='font-extrabold text-2xl text-gray-600 dark:text-gray-200'>Products</h1>
             <div className='flex gap-4 w-[40%] p-2 border rounded-full border-gray-400'>
                 <Search className='h-5 w-5 ml-4 text-gray-400'/>
                 <input type="text" className='text-sm outline-none w-[80%]' placeholder='search products...'/>                
             </div>
-            <button onClick={() => setOpen(!open)} className='border px-8 rounded-md cursor-pointer text-gray-700 font-extrabold'>Add</button>
+            <button onClick={() => setOpen(!open)} className='border px-8 dark:bg-gray-200 rounded-md cursor-pointer text-gray-700 font-extrabold'>Add</button>
           </div>
         </div> 
         <div className={`${open ? 'absolute' : 'hidden'} fixed transition-all duration-300 bg-white rounded-md shadow-md top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-4 w-full px-2 md:w-[30%] flex flex-col`}>
@@ -149,11 +149,11 @@ function Product() {
         <div className='md:w-[80%] w-full px-2  mx-auto py-30 grid grid-cols-2 md:grid-cols-4 gap-2'>
           {
             products.map((items) => (
-                <div key={items.id} className='p-2 rounded-md shadow-md bg-white h-[250px]'>
+                <div key={items.id} className='dark:bg-gray-700  p-2 rounded-md shadow-md bg-white h-[250px]'>
                     <img src={`http://localhost:3000/images/`+ items.image}  alt="" className='w-full object-cover h-[150px]'/> 
                     <div className='flex justify-between mt-2 '>
-                     <div>
-                        <h1 className='text-gray-600 font-extrabold '>{items.name}</h1>    
+                     <div className='d'>
+                        <h1 className='dark:text-gray-200 text-gray-600 font-extrabold '>{items.name}</h1>    
                         <p className='text-sm text-gray-400'>Quantity {items.quantity}psc</p> 
                         <p className='font-extrabold text-xl text-gray-700'>KES {items.price}</p>  
                      </div>
