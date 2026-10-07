@@ -36,7 +36,7 @@ export const getAllProducts = (req, res) => {
         return res.status(500).json({success: false, message: "Internal server error"})
     }
 }
-
+ 
 export const singleProduct = (req, res) => {
     const { id } = req.params
     try {
@@ -53,14 +53,14 @@ export const singleProduct = (req, res) => {
         console.log(error)
         return res.status(500).json({success: false, message: "Internal server error"})
     }
-}
-
+}  
+ 
 export const updateProduct = (req, res) => {
     const { name, price, quantity} = req.body
     const { id } = req.params
 
     try {
-        const updateProduct = "UPDATE product SET name = ?, price = ? quantity = ? WHERE id = ?"
+        const updateProduct = "UPDATE product SET name = ?, price = ?, quantity = ? WHERE id = ?"
         databaseConnection.query(updateProduct,[name,price,quantity,id], (error,result) => {
             if (error) return res.status(500).json({success: false, message: error})
             return res.status(200).json({success: true, message: "Product updated successfully"})

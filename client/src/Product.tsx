@@ -116,6 +116,7 @@ function Product() {
         } 
     } 
     
+    console.log(products)
      
   return (
     <div className={`relative  bg-gray-50 ${theme === 'light' ? '' : 'dark'} transition-all duration-100 ease-in  dark:bg-gray-800`}>
@@ -159,7 +160,7 @@ function Product() {
                      <div className='d'>
                         <h1 className='dark:text-gray-200 text-gray-600 font-extrabold '>{items.name}</h1>    
                         <p className='text-sm text-gray-400'>Quantity {items.quantity}psc</p> 
-                        <p className='font-extrabold text-xl text-gray-700'>KES {items.price}</p>  
+                        <p className='dark:text-gray-100 font-extrabold text-xl text-gray-700'>KES {items.price}</p>  
                      </div>
                      <div className='flex gap-2'>
                         <Trash onClick={() => {singleProduct(items.id), setopenDelete(!openDelete)}} className='h-4 w-4 text-red-400 cursor-pointer rounded-md'>
